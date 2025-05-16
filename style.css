@@ -157,7 +157,7 @@ canvas {
   gap: 20px; /* Espaço entre elementos */
 }
 
-#hud > div {
+#hud, #bru > div {
   display: flex;
   align-items: center;
   gap: 8px; /* Espaço entre ícone e texto */
