@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+   <!-- Open Graph Meta Tags -->
+    <meta property="og:url" content="https://brucardosocoder.github.io/zecafe/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Zé Café">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="https://brucardosocoder.github.io/zecafe/assets/images/zecafeopengraph.png">   
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="brucardosocoder.github.io">
+    <meta property="twitter:url" content="https://brucardosocoder.github.io/zecafe/">
+    <meta name="twitter:title" content="Zé Café">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="https://brucardosocoder.github.io/zecafe/assets/images/zecafeopengraph.png">
+  <title>Zé Café</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+ <!-- Sons do Jogo -->
+<audio id="dropSound" src="assets/sounds/drop.mp3"></audio>
+<audio id="winSound" src="assets/sounds/win.mp3"></audio>
+<audio id="zegoleSound" src="assets/sounds/zegole.mp3"></audio>
+<audio id="vitoriaSound" src="assets/sounds/vitoria.mp3"></audio>
+<audio id="inicioSound" src="assets/sounds/inicio.mp3"></audio>
+<audio id="zechoroSound" src="assets/sounds/zechoro.mp3"></audio>
+<audio id="loseSound" src="assets/sounds/lose.mp3"></audio>
+
+<!-- Botão Mute -->
+<button id="muteBtn" title="Ativar/Desativar Som">&#128266;</button>
+
+<!-- HUD -->
+<div id="hud">
+  <span id="hudVidas">Vidas: 5</span>
+  <span id="hudFase">Fase: 1</span>
+  <span id="hudTempo">Tempo: 15s</span>
+</div>
+
+<!-- Overlay escuro -->
+<div id="rulesOverlay"></div>
+
+<!-- Tela Inicial -->
+<div id="splashScreen">
+  <div id="zeCafeLogo"><img src="assets/images/zecafelogo.png" alt="Zé Café Logo"></div>
+  <div id="zeCafe"><img src="assets/images/zecafe.png" alt="Zé Café"></div>
+  <p>Não deixe o Zé perder o café!</p>
+  <button onclick="showRules()">Jogar</button>
+</div>
+
+<!-- Tela de Regras -->
+<div id="rulesScreen">
+  <h2>Como Jogar</h2>
+  <p>Mova o Zé com as setas ou botões para aparar o café.</p>
+  <p>Você tem 5 vidas e 15 segundos por fase.</p>
+  <p>Cada fase aumenta a dificuldade.</p>
+  <p>Se uma gota cair no chão, volta a fase 1.</p>
+  <button onclick="startGame()">Começar Jogo</button>
+</div>
+
+<!-- Canvas do Jogo -->
+<canvas id="gameCanvas"></canvas>
+
+<!-- Mensagem de Fase -->
+<div id="phaseMessage">Fase 1</div>
+
+<!-- Botões Virtuais Mobile -->
+<div id="controls">
+  <button id="leftBtn">&#8592;</button>
+  <button id="rightBtn">&#8594;</button>
+</div>
+
+<!-- Tela Final -->
+<div id="gameOverScreen" style="display: none;">
+  <p id="gameOverText">Parabéns! Você é Gourmet 100% Arábica!</p>
+  <button onclick="startGame()">Jogar Novamente</button>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
