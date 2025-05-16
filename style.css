@@ -152,6 +152,7 @@ canvas {
   z-index: 100;
   font-family: sans-serif;
   display: flex;
+  font-weight: bold;
   gap: 20px; /* Espaço entre elementos */
 }
 
