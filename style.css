@@ -76,7 +76,7 @@ canvas {
 
 #controls {
   position: absolute;
-  bottom: 180px;
+  bottom: 140px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
