@@ -19,7 +19,6 @@ canvas {
 
 #zeCafeLogo img {
   display: flex;
-  fex-direction: row;
   width: 300px;
 }
 
