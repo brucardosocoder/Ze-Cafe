@@ -57,6 +57,10 @@ canvas {
   background-color: #a0522d;
 }
 
+#gameOverText {
+  font-size: 50px;
+}
+
 #phaseMessage {
   position: absolute;
   top: 50%;
