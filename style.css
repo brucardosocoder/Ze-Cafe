@@ -19,6 +19,7 @@ canvas {
 
 #zeCafeLogo img {
   display: flex;
+  fex-direction: row;
   width: 300px;
 }
 
@@ -77,7 +78,7 @@ canvas {
 
 #controls {
   position: absolute;
-  bottom: 130px;
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
