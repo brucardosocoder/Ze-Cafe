@@ -72,7 +72,7 @@ canvas {
 
 #controls {
   position: absolute;
-  bottom: 400px;
+  bottom: 230px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
