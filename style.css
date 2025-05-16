@@ -18,6 +18,7 @@ canvas {
 }
 
 #zeCafeLogo img {
+  display: flex;
   width: 300px;
 }
 
