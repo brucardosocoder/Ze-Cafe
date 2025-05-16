@@ -143,8 +143,19 @@ canvas {
   z-index: 102;
 }
 
-#hud,
 #bru {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #000;
+  font-size: 16px;
+  z-index: 102;
+  font-family: sans-serif;
+  display: flex;
+  font-weight: bold;
+}
+
+#hud {
   position: absolute;
   top: 10px;
   left: 10px;
@@ -157,7 +168,7 @@ canvas {
   gap: 20px; /* Espaço entre elementos */
 }
 
-#hud, #bru > div {
+#hud > div {
   display: flex;
   align-items: center;
   gap: 8px; /* Espaço entre ícone e texto */
