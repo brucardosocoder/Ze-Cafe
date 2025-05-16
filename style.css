@@ -149,11 +149,19 @@ canvas {
   left: 10px;
   color: #000;
   font-size: 16px;
-  font-weight: bold;
   z-index: 100;
   font-family: sans-serif;
+  display: flex;
+  gap: 20px; /* Espaço entre elementos */
 }
-#hud span {
-  display: inline;
-  margin-bottom: 10px;
+
+#hud > div {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre ícone e texto */
+}
+
+#hud img {
+  width: 24px;
+  height: 24px;
 }
