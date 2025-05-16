@@ -299,6 +299,10 @@ function startGame() {
   document.getElementById("gameOverScreen").style.display = "none";
   document.getElementById("rulesScreen").style.display = "none";
   document.getElementById("rulesOverlay").style.display = "none";
+
+  document.getElementById("controls").style.display = "flex";
+  document.getElementById("hud").style.display = "flex";
+
   splashScreen.style.display = "none";
 
   // Toca música da fase 1
