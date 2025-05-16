@@ -156,25 +156,19 @@ function desenharCafes() {
         imgZeAtual = imgZeNormal;
       }, 500);
 
+      // Verifica se perdeu todas as vidas
       if (vidas <= 0) {
-  gameOver = true;
+        gameOver = true;
+        document.getElementById("gameOverText").innerText = "Você perdeu todas as vidas!";
+        document.getElementById("gameOverScreen").style.display = "block";
 
-  // ✅ Toca som de derrota
-  try {
-    loseSound.currentTime = 0;
-    loseSound.play();
-  } catch (e) {}
-
-  document.getElementById("gameOverText").innerText = "Você perdeu todas as vidas!";
-  document.getElementById("gameOverScreen").style.display = "block";
-}
-
-        // Para música da fase e toca som de derrota
+        // Para música da fase atual
         if (currentPhaseSound && !currentPhaseSound.paused) {
           currentPhaseSound.pause();
           currentPhaseSound.currentTime = 0;
         }
 
+        // Toca som de derrota
         try {
           loseSound.currentTime = 0;
           loseSound.play();
@@ -191,8 +185,9 @@ function desenharCafes() {
       cafes.splice(i, 1);
       i--;
     }
+
     // Colisão com o Zé
-    if (
+    else if (
       c.y + c.radius >= zecafe.y &&
       c.x > zecafe.x && c.x < zecafe.x + zecafe.width
     ) {
@@ -209,14 +204,16 @@ function desenharCafes() {
       i--;
     }
   }
-
+}
 
 function mostrarHUD() {
   ctx.fillStyle = '#000';
   ctx.font = '20px sans-serif';
-  ctx.fillText(`Vidas: ${Math.max(0, vidas)}`, 10, 30);
-  ctx.fillText(`Fase: ${fase}`, 10, 60);
-  ctx.fillText(`Tempo: ${tempoRestante.toFixed(1)}s`, 10, 90);
+
+  // Atualiza o texto do HUD
+  document.getElementById("hudVidas").textContent = `Vidas: ${Math.max(0, vidas)}`;
+  document.getElementById("hudFase").textContent = `Fase: ${fase}`;
+  document.getElementById("hudTempo").textContent = `Tempo: ${tempoRestante.toFixed(1)}s`;
 }
 
 // Controle por botões
@@ -228,6 +225,7 @@ document.getElementById("leftBtn")?.addEventListener("touchend", () => movingLef
 document.getElementById("rightBtn")?.addEventListener("touchstart", () => movingRight = true);
 document.getElementById("rightBtn")?.addEventListener("touchend", () => movingRight = false);
 
+// Controle por teclado
 window.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") movingLeft = true;
   if (e.key === "ArrowRight") movingRight = true;
@@ -261,7 +259,7 @@ function showRules() {
     currentPhaseSound.currentTime = 0;
   }
 
-  // ✅ Toca som da tela inicial apenas uma vez
+  // ✅ Reinicia e toca som da tela inicial apenas uma vez
   try {
     inicioSound.currentTime = 0;
     if (!isMuted) inicioSound.play();
@@ -269,18 +267,25 @@ function showRules() {
 }
 
 function startGame() {
-  // ✅ Para som de derrota, se estiver tocando
-  if (loseSound) {
-    loseSound.pause();
-    loseSound.currentTime = 0;
+  // ✅ Para e reinicia o som de início
+  if (inicioSound && !inicioSound.paused) {
+    inicioSound.pause();
+    inicioSound.currentTime = 0;
   }
 
-  // ✅ Para música da fase atual
-  if (currentPhaseSound) {
+  // ✅ Para música da fase anterior (se estiver tocando)
+  if (currentPhaseSound && !currentPhaseSound.paused) {
     currentPhaseSound.pause();
     currentPhaseSound.currentTime = 0;
   }
 
+  // ✅ Para som de derrota (se estiver tocando)
+  if (loseSound && !loseSound.paused) {
+    loseSound.pause();
+    loseSound.currentTime = 0;
+  }
+
+  // Reinicia variáveis do jogo
   fase = 1;
   vidas = 5;
   tempoRestante = 15;
@@ -290,46 +295,18 @@ function startGame() {
   resetXicaras();
   cafes = [];
 
-  // ✅ Para e reinicia o som da tela inicial
-  try {
-    if (inicioSound && !inicioSound.paused) {
-      inicioSound.pause();
-      inicioSound.currentTime = 0;
-    }
-  } catch (e) {
-    console.error("Erro ao parar inicio.mp3", e);
-  }
-
-  // ✅ Para qualquer música da fase anterior
-  if (currentPhaseSound && !currentPhaseSound.paused) {
-    currentPhaseSound.pause();
-    currentPhaseSound.currentTime = 0;
-  }
-
-  // ✅ Oculta telas
+  // Oculta telas
   document.getElementById("gameOverScreen").style.display = "none";
   document.getElementById("rulesScreen").style.display = "none";
   document.getElementById("rulesOverlay").style.display = "none";
   splashScreen.style.display = "none";
 
-  // ✅ Toca música da fase atual
+  // Toca música da fase 1
   playPhaseSound(fase - 1); // Fase 1 = índice 0
 
   lastFrameTime = performance.now();
   requestAnimationFrame(gameLoop);
   showPhaseMessage(fase);
-
-  // ✅ Para e reinicia o som de derrota
-  if (loseSound && !loseSound.paused) {
-    loseSound.pause();
-    loseSound.currentTime = 0;
-  }
-
-  // ✅ Para música da fase anterior
-  if (currentPhaseSound && !currentPhaseSound.paused) {
-    currentPhaseSound.pause();
-    currentPhaseSound.currentTime = 0;
-  }
 }
 
 function gameLoop(timestamp) {
@@ -342,7 +319,7 @@ function gameLoop(timestamp) {
   desenharXicaras();
   if (imagensCarregadas) desenharZecafe();
   desenharCafes();
-  updateHUD(); // Atualiza o HUD com vidas, fase e tempo
+  mostrarHUD();
 
   const deltaTime = timestamp - lastFrameTime;
   tempoRestante -= deltaTime / 1000;
@@ -354,7 +331,7 @@ function gameLoop(timestamp) {
       tempoRestante = 15;
       resetXicaras();
       showPhaseMessage(fase);
-      playPhaseSound(fase - 1);
+      playPhaseSound(fase - 1); // Toca música da nova fase
       try {
         winSound.play();
       } catch (e) {}
@@ -375,13 +352,6 @@ function gameLoop(timestamp) {
   requestAnimationFrame(gameLoop);
 }
 
-  function updateHUD() {
-  document.getElementById("hudVidas").textContent = `Vidas: ${Math.max(0, vidas)}`;
-  document.getElementById("hudFase").textContent = `Fase: ${fase}`;
-  document.getElementById("hudTempo").textContent = `Tempo: ${tempoRestante.toFixed(1)}s`;
-}
-
-
 // Função de mute atualizada
 function toggleMute() {
   isMuted = !isMuted;
@@ -390,7 +360,7 @@ function toggleMute() {
   const audios = [
     dropSound, winSound, zegoleSound,
     vitoriaSound, inicioSound, zechoroSound,
-    loseSound, ...phaseSounds // ✅ Incluído aqui
+    loseSound, ...phaseSounds
   ];
 
   audios.forEach(audio => {
