@@ -1,6 +1,45 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+preloadAssets();
+
+document.addEventListener("DOMContentLoaded", function() {
+            // Pré-carrega assets
+            preloadAssets();
+            
+            // Cria elementos do jogo
+            criarPersonagem();
+            criarXicaras();
+            
+            // Inicia o jogo
+            iniciarJogo();
+        });
+
+        function preloadAssets() {
+            const imagens = ["ze.png", "xicara.png", "cafe.png"];
+            imagens.forEach(src => new Image().src = src);
+        }
+
+        function criarPersonagem() {
+            const ze = document.createElement("div");
+            ze.id = "ze";
+            document.getElementById("jogo").appendChild(ze);
+        }
+
+        function criarXicaras() {
+            for (let i = 0; i < 3; i++) {
+                const xicara = document.createElement("div");
+                xicara.className = "xicara";
+                xicara.style.left = `${20 + i * 30}%`;
+                document.getElementById("jogo").appendChild(xicara);
+            }
+        }
+
+        function iniciarJogo() {
+            console.log("Jogo iniciado!");
+            // Lógica do jogo aqui...
+        }
+
 function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
