@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <!-- Open Graph Meta Tags -->
     <meta property="og:url" content="https://brucardosocoder.github.io/ze-cafe/">
     <meta property="og:type" content="website">
@@ -18,7 +18,7 @@
     <meta name="twitter:image" content="https://brucardosocoder.github.io/Ze-Cafe/assets/images/zecafeopengraph.png">
   <title>Zé Café</title>
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -30,18 +30,21 @@
 <audio id="inicioSound" src="assets/sounds/inicio.mp3"></audio>
 <audio id="zechoroSound" src="assets/sounds/zechoro.mp3"></audio>
 <audio id="loseSound" src="assets/sounds/lose.mp3"></audio>
+<!-- Novos sons para feedback -->
+<audio id="comboSound" src="assets/sounds/combo.mp3"></audio>
+<audio id="powerupSound" src="assets/sounds/powerup.mp3"></audio>
 
 <!-- Botão Mute -->
-<button id="muteBtn" title="Ativar/Desativar Som">&#128266;</button>
+<button id="muteBtn" title="Ativar/Desativar Som">🔊</button>
 
-  <div id="bru">
+<div id="bru">
   <div>
     <p>Desenvolvido por Bru Cardoso Coder</p>
   </div>
-  </div>
+</div>
 
 <!-- HUD -->
-<div id="hud" style="display: none;">
+<div id="hud">
   <div>
     <i class="fa-solid fa-heart"></i>
     <span id="hudVidas">Vidas: 5</span>
@@ -54,6 +57,21 @@
     <i class="fa-solid fa-hourglass-start"></i>
     <span id="hudTempo">Tempo: 15s</span>
   </div>
+  <!-- HUD para pontuação -->
+  <div>
+    <i class="fa-solid fa-star"></i>
+    <span id="hudPontos">Pontos: 0</span>
+  </div>
+  <!-- Novo HUD para meta de pontos -->
+  <div id="hudMetaContainer">
+    <i class="fa-solid fa-trophy"></i>
+    <span id="hudMeta">Meta: 1000</span>
+  </div>
+  <!-- HUD para combo -->
+  <div id="comboContainer" style="display: none;">
+    <i class="fa-solid fa-fire"></i>
+    <span id="hudCombo">Combo: x1</span>
+  </div>
 </div>
 
 <!-- Overlay escuro -->
@@ -61,19 +79,25 @@
 
 <!-- Tela Inicial -->
 <div id="splashScreen">
-  <div id="zeCafeLogo"><p>®</p><img src="assets/images/zecafelogo.png" alt="Zé Café Logo"></div>
-  <div id="zeCafe"><img src="assets/images/zecafeinicio.png" alt="Zé Café"></div>
-  <p>Não deixe o Zé perder o café!</p>
-  <button onclick="showRules()">Jogar</button>
+  <div class="splash-content">
+    <div id="zeCafeLogo"><p>®</p><img src="assets/images/zecafelogo.png" alt="Zé Café Logo"></div>
+    <div id="zeCafe"><img src="assets/images/zecafeinicio.png" alt="Zé Café"></div>
+    <p>Não deixe o Zé perder o café!</p>
+    <button onclick="showRules()">Jogar</button>
+  </div>
 </div>
 
 <!-- Tela de Regras -->
 <div id="rulesScreen">
   <h2>Como Jogar</h2>
   <p>Mova o Zé com as setas ou botões para aparar o café.</p>
-  <p>Você tem 5 vidas e 15 segundos por fase.</p>
-  <p>Cada fase aumenta a dificuldade.</p>
-  <p>Se uma gota cair no chão, volta a fase 1.</p>
+  <p>Você tem 5 vidas. Se uma gota cair, volta à fase 1 e zera a pontuação.</p>
+  <p>Avance de fase alcançando a meta de pontos:</p>
+  <p>Fase 1: 1000 pontos</p>
+  <p>Fase 2: 2000 pontos</p>
+  <p>Fase 3: 3000 pontos</p>
+  <p>Fase 4: 4000 pontos</p>
+  <p>Na fase 5, sobreviva até o tempo acabar!</p>
   <button onclick="startGame()">Começar Jogo</button>
 </div>
 
@@ -83,17 +107,54 @@
 <!-- Mensagem de Fase -->
 <div id="phaseMessage">Fase 1</div>
 
+<!-- Mensagem de Pontuação -->
+<div id="scoreMessage"></div>
+
+<!-- Mensagem de Combo -->
+<div id="comboMessage"></div>
+
 <!-- Botões Virtuais Mobile -->
-<div id="controls" style="display: none;">
+<div id="controls">
   <button id="leftBtn"><i class="fa-duotone fa-solid fa-circle-left" style="--fa-primary-color: #ab754c; --fa-secondary-color: #4f2401;"></i></button>
   <button id="rightBtn"><i class="fa-duotone fa-solid fa-circle-right" style="--fa-primary-color: #ab754c; --fa-secondary-color: #4d2201;"></i></button>
 </div>
 
 <!-- Tela Final -->
-<div id="gameOverScreen" style="display: none;">
+<div id="gameOverScreen">
   <p id="gameOverText">Parabéns! Você é Gourmet 100% Arábica!</p>
+  <div id="finalScore">Pontuação Final: 0</div>
+  
+  <!-- Tabela de High Scores -->
+  <div id="highScoresContainer">
+    <h3>Melhores Pontuações</h3>
+    <table id="highScoresTable">
+      <thead>
+        <tr>
+          <th>Posição</th>
+          <th>Pontuação</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody id="highScoresBody">
+        <!-- Preenchido dinamicamente -->
+      </tbody>
+    </table>
+  </div>
+  
   <button onclick="startGame()">Jogar Novamente</button>
 </div>
+
+<!-- Conquistas -->
+<div id="achievementPopup">
+  <div class="achievement-content">
+    <i class="fa-solid fa-trophy"></i>
+    <div class="achievement-text">
+      <h3 id="achievementTitle">Conquista Desbloqueada!</h3>
+      <p id="achievementDescription">Você desbloqueou uma nova conquista.</p>
+    </div>
+  </div>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>
