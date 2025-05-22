@@ -65,25 +65,43 @@ const imgGota = new Image();
 imgGota.src = "assets/images/gotaasset.png";
 
 let imagensCarregadas = false;
+let imagensContador = 0;
+const totalImagens = 5; // Total de imagens que precisam ser carregadas
+
+// Função para verificar se todas as imagens foram carregadas
+function verificarCarregamentoImagens() {
+  imagensContador++;
+  if (imagensContador >= totalImagens) {
+    imagensCarregadas = true;
+    console.log("Todas as imagens carregadas!");
+  }
+}
 
 // Garante que todas as imagens carreguem antes do jogo iniciar
-imgZeNormal.onload = () => {
-  imgZeBoca.onload = () => {
-    imgZeChoro.onload = () => {
-      imgXicara.onload = () => {
-        imgGota.onload = () => {
-          imagensCarregadas = true;
-          console.log("Todas as imagens carregadas!");
-        };
-        imgGota.onerror = () => console.error("Erro ao carregar gotaasset.png");
-      };
-      imgXicara.onerror = () => console.error("Erro ao carregar xicaracafeasset.png");
-    };
-    imgZeChoro.onerror = () => console.error("Erro ao carregar zecafechoro.png");
-  };
-  imgZeBoca.onerror = () => console.error("Erro ao carregar zecafeboca.png");
-};
+imgZeNormal.onload = verificarCarregamentoImagens;
+imgZeBoca.onload = verificarCarregamentoImagens;
+imgZeChoro.onload = verificarCarregamentoImagens;
+imgXicara.onload = verificarCarregamentoImagens;
+imgGota.onload = verificarCarregamentoImagens;
+
+// Tratamento de erros de carregamento
 imgZeNormal.onerror = () => console.error("Erro ao carregar zecafe.png");
+imgZeBoca.onerror = () => console.error("Erro ao carregar zecafeboca.png");
+imgZeChoro.onerror = () => console.error("Erro ao carregar zecafechoro.png");
+imgXicara.onerror = () => console.error("Erro ao carregar xicaracafeasset.png");
+imgGota.onerror = () => console.error("Erro ao carregar gotaasset.png");
+
+// Forçar recarregamento das imagens para garantir que sejam carregadas
+function recarregarImagens() {
+  imagensCarregadas = false;
+  imagensContador = 0;
+  
+  imgZeNormal.src = imgZeNormal.src + "?t=" + new Date().getTime();
+  imgZeBoca.src = imgZeBoca.src + "?t=" + new Date().getTime();
+  imgZeChoro.src = imgZeChoro.src + "?t=" + new Date().getTime();
+  imgXicara.src = imgXicara.src + "?t=" + new Date().getTime();
+  imgGota.src = imgGota.src + "?t=" + new Date().getTime();
+}
 
 function resetXicaras() {
   xicaras = [];
@@ -111,12 +129,10 @@ function showPhaseMessage(phase) {
 }
 
 function desenharZecafe() {
-  if (!imagensCarregadas) return;
   ctx.drawImage(imgZeAtual, zecafe.x, zecafe.y, zecafe.width, zecafe.height);
 }
 
 function desenharXicaras() {
-  if (!imagensCarregadas) return;
   for (let x of xicaras) {
     ctx.drawImage(imgXicara, x.x - 20, x.y - 20, 40, 40);
   }
@@ -137,8 +153,6 @@ function gerarCafe() {
 }
 
 function desenharCafes() {
-  if (!imagensCarregadas) return;
-
   for (let i = 0; i < cafes.length; i++) {
     const c = cafes[i];
     ctx.drawImage(imgGota, c.x - c.radius, c.y - c.radius, c.radius * 2, c.radius * 2);
@@ -184,42 +198,41 @@ function desenharCafes() {
 
       cafes.splice(i, 1);
       i--;
+      continue;
     }
 
     // Colisão com o Zé
-    else if (
-      c.y + c.radius >= zecafe.y &&
-      c.x > zecafe.x && c.x < zecafe.x + zecafe.width
+    if (
+      c.y + c.radius > zecafe.y &&
+      c.x > zecafe.x &&
+      c.x < zecafe.x + zecafe.width
     ) {
-      imgZeAtual = imgZeBoca;
-      setTimeout(() => {
-        imgZeAtual = imgZeNormal;
-      }, 100);
+      cafes.splice(i, 1);
+      i--;
 
       try {
         zegoleSound.play();
       } catch (e) {}
 
-      cafes.splice(i, 1);
-      i--;
+      imgZeAtual = imgZeBoca;
+      setTimeout(() => {
+        imgZeAtual = imgZeNormal;
+      }, 300);
     }
   }
 }
 
 function mostrarHUD() {
-  ctx.fillStyle = '#000';
-  ctx.font = '20px sans-serif';
-
-  // Atualiza o texto do HUD
-  document.getElementById("hudVidas").textContent = `Vidas: ${Math.max(0, vidas)}`;
+  document.getElementById("hudVidas").textContent = `Vidas: ${vidas}`;
   document.getElementById("hudFase").textContent = `Fase: ${fase}`;
   document.getElementById("hudTempo").textContent = `Tempo: ${tempoRestante.toFixed(1)}s`;
 }
 
-// Controle por botões
+let lastFrameTime = performance.now();
 let movingLeft = false;
 let movingRight = false;
 
+// Controle por botões
 document.getElementById("leftBtn")?.addEventListener("touchstart", () => movingLeft = true);
 document.getElementById("leftBtn")?.addEventListener("touchend", () => movingLeft = false);
 document.getElementById("rightBtn")?.addEventListener("touchstart", () => movingRight = true);
@@ -264,9 +277,50 @@ function showRules() {
     inicioSound.currentTime = 0;
     if (!isMuted) inicioSound.play();
   } catch (e) {}
+  
+  // Forçar recarregamento das imagens se ainda não estiverem carregadas
+  if (!imagensCarregadas) {
+    recarregarImagens();
+  }
 }
 
 function startGame() {
+  // Se as imagens não estiverem carregadas, forçar recarregamento e aguardar
+  if (!imagensCarregadas) {
+    recarregarImagens();
+    
+    // Mostrar mensagem de carregamento
+    const loadingMessage = document.createElement("div");
+    loadingMessage.id = "loadingMessage";
+    loadingMessage.style.position = "fixed";
+    loadingMessage.style.top = "50%";
+    loadingMessage.style.left = "50%";
+    loadingMessage.style.transform = "translate(-50%, -50%)";
+    loadingMessage.style.background = "rgba(0,0,0,0.7)";
+    loadingMessage.style.color = "white";
+    loadingMessage.style.padding = "20px";
+    loadingMessage.style.borderRadius = "10px";
+    loadingMessage.style.zIndex = "9999";
+    loadingMessage.textContent = "Carregando imagens do jogo...";
+    document.body.appendChild(loadingMessage);
+    
+    // Verificar periodicamente se as imagens foram carregadas
+    const checkLoading = setInterval(() => {
+      if (imagensCarregadas) {
+        clearInterval(checkLoading);
+        document.body.removeChild(loadingMessage);
+        iniciarJogo();
+      }
+    }, 100);
+    
+    return;
+  }
+  
+  // Se as imagens já estiverem carregadas, iniciar o jogo diretamente
+  iniciarJogo();
+}
+
+function iniciarJogo() {
   // ✅ Para e reinicia o som de início
   if (inicioSound && !inicioSound.paused) {
     inicioSound.pause();
@@ -322,7 +376,7 @@ function gameLoop(timestamp) {
   updatePlayer();
   gerarCafe();
   desenharXicaras();
-  if (imagensCarregadas) desenharZecafe();
+  desenharZecafe(); // Removida a verificação de imagensCarregadas, pois já garantimos que estão carregadas
   desenharCafes();
   mostrarHUD();
 
