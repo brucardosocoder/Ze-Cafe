@@ -1,4 +1,4 @@
-/* Estilos para o jogo Zé Café - Versão com Novas Regras */
+/* Estilos para o jogo Zé Café - Versão com Ajustes Finais */
 
 body {
   margin: 0;
@@ -47,28 +47,43 @@ canvas {
   background-color: rgba(0, 0, 0, 0.7);
 }
 
+/* HUD reorganizado em colunas verticais */
 #hud {
   position: fixed;
-  top: 10px;
-  left: 0;
-  right: 0;
   display: none;
-  justify-content: center;
-  gap: 20px;
-  color: #333;
-  font-weight: bold;
-  font-size: 18px;
-  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  justify-content: space-between;
+  width: 100%;
+  top: 120px;
+  padding: 0 10px;
+  box-sizing: border-box;
   z-index: 100;
 }
 
-#hud div {
+.hud-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.left-column {
+  align-items: flex-start;
+}
+
+.right-column {
+  align-items: flex-end;
+}
+
+#hud div div {
   display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.7);
   padding: 5px 10px;
   border-radius: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  color: #333;
+  font-weight: bold;
+  font-size: 18px;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 
 #hud i {
@@ -309,33 +324,48 @@ canvas {
 
 #gameOverText {
   font-size: 36px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   color: #ffd700;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
-#finalScore {
-  font-size: 24px;
-  margin-bottom: 30px;
+/* Estilo para a imagem do Zé chorando na tela de game over */
+#gameOverZe {
+  margin-bottom: 20px;
 }
 
+#gameOverZe img {
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+}
+
+#finalScore {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Centralização da tabela de ranking */
 #highScoresContainer {
   background-color: rgba(255, 255, 255, 0.1);
   padding: 20px;
   border-radius: 10px;
   margin-bottom: 30px;
   max-width: 80%;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
 }
 
 #highScoresContainer h3 {
   color: #ffd700;
   margin-top: 0;
+  margin-bottom: 15px;
 }
 
 #highScoresTable {
   width: 100%;
   border-collapse: collapse;
   color: white;
+  margin: 0 auto;
 }
 
 #highScoresTable th, 
@@ -395,12 +425,8 @@ canvas {
 
 /* Responsividade */
 @media (max-width: 768px) {
-  #hud {
+  #hud div div {
     font-size: 14px;
-    gap: 10px;
-  }
-  
-  #hud div {
     padding: 3px 8px;
   }
   
