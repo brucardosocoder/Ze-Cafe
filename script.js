@@ -615,7 +615,7 @@ function gerarCafe() {
     const xicara = xicaras[Math.floor(Math.random() * xicaras.length)];
     if (xicara) {
       // Variação na velocidade das gotas
-      const velocidadeBase = 1.5 + fase * 0.5;
+      const velocidadeBase = 0.8 + fase * 0.5;
       const variacao = Math.random() * 0.5 - 0.25; // -0.25 a +0.25
       
       cafes.push({
@@ -624,8 +624,8 @@ function gerarCafe() {
         radius: 10,
         speed: velocidadeBase + variacao,
         // Adicionar movimento em zigue-zague para algumas gotas
-        zigzag: Math.random() < 0.2, // 20% de chance
-        amplitude: Math.random() * 2 + 1, // 1-3 pixels
+        zigzag: Math.random() < 0.5, // 20% de chance
+        amplitude: Math.random() * 5 + 1, // 1-3 pixels
         frequency: Math.random() * 0.1 + 0.05, // frequência do zigue-zague
         angle: 0 // ângulo inicial para o movimento
       });
@@ -665,6 +665,15 @@ function desenharCafes() {
         gameOver = true;
         document.getElementById("gameOverText").innerText = "Você perdeu todas as vidas!";
         document.getElementById("gameOverScreen").style.display = "block";
+        
+        // Mostrar Zé chorando na tela de game over
+        imgZeAtual = imgZeChoro;
+        
+        // Adicionar imagem do Zé chorando na tela de game over
+        const gameOverZe = document.getElementById("gameOverZe");
+        if (gameOverZe) {
+          gameOverZe.style.display = "block";
+        }
 
         // Para música da fase atual
         if (currentPhaseSound && !currentPhaseSound.paused) {
@@ -946,9 +955,8 @@ function gameLoop(timestamp) {
       
       document.getElementById("gameOverScreen").style.display = "block";
     } else {
-      // Nas outras fases, o tempo é apenas um limite, a progressão é por pontuação
-      // Reiniciar o tempo para evitar que o jogo termine
-      tempoRestante = 15;
+      // Nas fases 1-4, avançar para a próxima fase quando o tempo acabar
+      avancarFase();
     }
   }
 
