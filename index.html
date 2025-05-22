@@ -43,34 +43,38 @@
   </div>
 </div>
 
-<!-- HUD -->
+<!-- HUD reorganizado em colunas verticais -->
 <div id="hud">
-  <div>
-    <i class="fa-solid fa-heart"></i>
-    <span id="hudVidas">Vidas: 5</span>
+  <!-- Coluna esquerda: vidas, fase e tempo -->
+  <div class="hud-column left-column">
+    <div>
+      <i class="fa-solid fa-heart"></i>
+      <span id="hudVidas">Vidas: 5</span>
+    </div>
+    <div>
+      <i class="fa-solid fa-mug-hot"></i>
+      <span id="hudFase">Fase: 1</span>
+    </div>
+    <div>
+      <i class="fa-solid fa-hourglass-start"></i>
+      <span id="hudTempo">Tempo: 15s</span>
+    </div>
   </div>
-  <div>
-    <i class="fa-solid fa-mug-hot"></i>
-    <span id="hudFase">Fase: 1</span>
-  </div>
-  <div>
-    <i class="fa-solid fa-hourglass-start"></i>
-    <span id="hudTempo">Tempo: 15s</span>
-  </div>
-  <!-- HUD para pontuação -->
-  <div>
-    <i class="fa-solid fa-star"></i>
-    <span id="hudPontos">Pontos: 0</span>
-  </div>
-  <!-- Novo HUD para meta de pontos -->
-  <div id="hudMetaContainer">
-    <i class="fa-solid fa-trophy"></i>
-    <span id="hudMeta">Meta: 1000</span>
-  </div>
-  <!-- HUD para combo -->
-  <div id="comboContainer" style="display: none;">
-    <i class="fa-solid fa-fire"></i>
-    <span id="hudCombo">Combo: x1</span>
+  
+  <!-- Coluna direita: pontos, meta e combo -->
+  <div class="hud-column right-column">
+    <div>
+      <i class="fa-solid fa-star"></i>
+      <span id="hudPontos">Pontos: 0</span>
+    </div>
+    <div id="hudMetaContainer">
+      <i class="fa-solid fa-trophy"></i>
+      <span id="hudMeta">Meta: 1000</span>
+    </div>
+    <div id="comboContainer" style="display: none;">
+      <i class="fa-solid fa-fire"></i>
+      <span id="hudCombo">Combo: x1</span>
+    </div>
   </div>
 </div>
 
@@ -92,11 +96,9 @@
   <h2>Como Jogar</h2>
   <p>Mova o Zé com as setas ou botões para aparar o café.</p>
   <p>Você tem 5 vidas. Se uma gota cair, volta à fase 1 e zera a pontuação.</p>
-  <p>Avance de fase alcançando a meta de pontos:</p>
-  <p>Fase 1: 1000 pontos</p>
-  <p>Fase 2: 2000 pontos</p>
-  <p>Fase 3: 3000 pontos</p>
-  <p>Fase 4: 4000 pontos</p>
+  <p>Avance de fase alcançando a meta de pontos ou quando o tempo acabar:</p>
+  <p>Fase 1: 1000 pontos | Fase 2: 2000 pontos</p>
+  <p>Fase 3: 3000 pontos | Fase 4: 4000 pontos</p>
   <p>Na fase 5, sobreviva até o tempo acabar!</p>
   <button onclick="startGame()">Começar Jogo</button>
 </div>
@@ -122,9 +124,15 @@
 <!-- Tela Final -->
 <div id="gameOverScreen">
   <p id="gameOverText">Parabéns! Você é Gourmet 100% Arábica!</p>
+  
+  <!-- Imagem do Zé chorando na tela de game over -->
+  <div id="gameOverZe">
+    <img src="assets/images/zecafechoro.png" alt="Zé Café chorando" width="150">
+  </div>
+  
   <div id="finalScore">Pontuação Final: 0</div>
   
-  <!-- Tabela de High Scores -->
+  <!-- Tabela de High Scores centralizada -->
   <div id="highScoresContainer">
     <h3>Melhores Pontuações</h3>
     <table id="highScoresTable">
