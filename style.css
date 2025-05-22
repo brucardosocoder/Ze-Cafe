@@ -1,129 +1,179 @@
-* {
+/* Estilos para o jogo Zé Café - Versão com Novas Regras */
+
+body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-body, html {
-  width: 100%;
-  height: 100%;
   overflow: hidden;
-  font-family: sans-serif;
-  background-color: #f5e6d3;
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f0e1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  transition: background-color 1s ease; /* Transição suave para mudança de cor de fundo */
 }
 
 canvas {
   display: block;
-  background: #fffbe6;
+  background-color: #f5f0e1;
+  transition: background-color 1s ease; /* Transição suave para mudança de cor de fundo */
 }
 
-#zeCafeLogo img {
-  display: flex;
-  width: 300px;
+#bru {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  color: #333;
+  font-size: 14px;
 }
 
-#zeCafe img {
-  width: 150px;
+#muteBtn {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 1000;
+  transition: background-color 0.3s;
 }
 
-#splashScreen,
-#gameOverScreen,
-#rulesScreen {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: #8b4513;
+#muteBtn:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+#hud {
+  position: fixed;
+  top: 10px;
+  left: 0;
+  right: 0;
+  display: none;
+  justify-content: center;
+  gap: 20px;
+  color: #333;
+  font-weight: bold;
+  font-size: 18px;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
   z-index: 100;
 }
 
+#hud div {
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 5px 10px;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#hud i {
+  margin-right: 5px;
+  color: #8b4513;
+}
+
+#comboContainer {
+  background-color: rgba(255, 165, 0, 0.8) !important;
+  animation: pulse 1s infinite;
+}
+
+#hudMetaContainer {
+  background-color: rgba(255, 215, 0, 0.7) !important;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+#splashScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f0e1;
+  z-index: 1000;
+}
+
+/* Container para centralizar corretamente o conteúdo da tela inicial */
+.splash-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+
+#zeCafeLogo {
+  position: relative;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#zeCafeLogo p {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 12px;
+  margin: 0;
+}
+
+#zeCafeLogo img {
+  max-width: 80%;
+  height: auto;
+}
+
+#zeCafe {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#zeCafe img {
+  max-width: 200px;
+  height: auto;
+}
+
+#splashScreen p {
+  font-size: 24px;
+  color: #8b4513;
+  margin: 20px 0;
+  text-align: center;
+}
+
 #splashScreen button,
-#gameOverScreen button,
-#rulesScreen button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 18px;
-  cursor: pointer;
-  border: none;
-  border-radius: 8px;
+#rulesScreen button,
+#gameOverScreen button {
   background-color: #8b4513;
   color: white;
-  transition: background-color 0.3s ease;
+  border: none;
+  padding: 15px 30px;
+  font-size: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 #splashScreen button:hover,
-#gameOverScreen button:hover,
-#rulesScreen button:hover {
+#rulesScreen button:hover,
+#gameOverScreen button:hover {
   background-color: #a0522d;
-}
-
-#gameOverText {
-  font-size: 50px;
-}
-
-#phaseMessage {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 32px;
-  color: #8b4513;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease-in-out;
-  z-index: 10;
-}
-
-#controls {
-  position: absolute;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 250px;
-  z-index: 10;
-}
-
-#controls button {
-  width: 60px;
-  height: 120px;
-  font-size: 24px;
-  border-radius: 30%;
-  background-color: rgba(139, 69, 19, 0.7);
-  color: white;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: background-color 0.2s ease;
-}
-
-#controls button:active {
-  background-color: #8b4513;
-}
-
-#rulesScreen {
-  background-color: rgba(255, 255, 255, 0.95);
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  z-index: 101;
-  display: none;
-  max-width: 90%;
-  width: 400px;
-}
-
-#rulesScreen h2 {
-  font-size: 28px;
-  color: #8b4513;
-  margin-bottom: 15px;
-}
-
-#rulesScreen p {
-  font-size: 16px;
-  color: #333;
-  margin-bottom: 25px;
-  line-height: 1.5;
+  transform: translateY(-2px);
 }
 
 #rulesOverlay {
@@ -132,54 +182,254 @@ canvas {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 900;
   display: none;
+}
+
+#rulesScreen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  max-width: 80%;
+  text-align: center;
+  display: none;
+}
+
+#rulesScreen h2 {
+  color: #8b4513;
+  margin-top: 0;
+  font-size: 28px;
+}
+
+#rulesScreen p {
+  font-size: 18px;
+  margin: 10px 0;
+  color: #333;
+}
+
+#phaseMessage {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(139, 69, 19, 0.8);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 10px;
+  font-size: 32px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: 500;
+}
+
+#scoreMessage {
+  position: fixed;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transition: opacity 0.5s, transform 0.5s;
+  z-index: 500;
+  pointer-events: none;
+  transform: translateY(0);
+  animation: floatUp 1s ease-out;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-30px); opacity: 0; }
+}
+
+#comboMessage {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ff8c00;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255, 140, 0, 0.7);
+  opacity: 0;
+  transition: opacity 0.5s, transform 0.5s, font-size 0.5s;
+  z-index: 500;
+  pointer-events: none;
+}
+
+#controls {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: none;
+  justify-content: space-around;
   z-index: 100;
 }
 
-#muteBtn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+#controls button {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 50px;
+  color: #8b4513;
   cursor: pointer;
-  z-index: 102;
+  padding: 10px;
+  opacity: 0.7;
+  transition: opacity 0.3s, transform 0.3s;
 }
 
-#bru {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  color: #000;
-  font-size: 16px;
-  z-index: 102;
-  font-family: sans-serif;
-  display: flex;
-  font-weight: bold;
+#controls button:hover,
+#controls button:active {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
-#hud {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  color: #000;
-  font-size: 16px;
-  z-index: 100;
-  font-family: sans-serif;
-  display: flex;
-  font-weight: bold;
-  gap: 20px; /* Espaço entre elementos */
+#gameOverScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  color: white;
+  text-align: center;
 }
 
-#hud > div {
+#gameOverText {
+  font-size: 36px;
+  margin-bottom: 20px;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+#finalScore {
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+#highScoresContainer {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  max-width: 80%;
+}
+
+#highScoresContainer h3 {
+  color: #ffd700;
+  margin-top: 0;
+}
+
+#highScoresTable {
+  width: 100%;
+  border-collapse: collapse;
+  color: white;
+}
+
+#highScoresTable th, 
+#highScoresTable td {
+  padding: 8px;
+  text-align: center;
+}
+
+#highScoresTable th {
+  border-bottom: 1px solid #ffd700;
+}
+
+#achievementPopup {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background-color: rgba(255, 215, 0, 0.9);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+  max-width: 300px;
+}
+
+.achievement-content {
   display: flex;
   align-items: center;
-  gap: 8px; /* Espaço entre ícone e texto */
 }
 
-#hud img {
-  width: 24px;
-  height: 24px;
+.achievement-content i {
+  font-size: 30px;
+  color: #8b4513;
+  margin-right: 15px;
+}
+
+.achievement-text {
+  text-align: left;
+}
+
+.achievement-text h3 {
+  margin: 0 0 5px 0;
+  color: #8b4513;
+}
+
+.achievement-text p {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+#loadingMessage {
+  z-index: 9999;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  #hud {
+    font-size: 14px;
+    gap: 10px;
+  }
+  
+  #hud div {
+    padding: 3px 8px;
+  }
+  
+  #rulesScreen {
+    padding: 20px;
+  }
+  
+  #rulesScreen h2 {
+    font-size: 24px;
+  }
+  
+  #rulesScreen p {
+    font-size: 16px;
+  }
+  
+  #phaseMessage {
+    font-size: 24px;
+    padding: 10px 20px;
+  }
+  
+  #gameOverText {
+    font-size: 28px;
+  }
+  
+  #finalScore {
+    font-size: 20px;
+  }
+  
+  #controls button {
+    font-size: 40px;
+  }
 }
