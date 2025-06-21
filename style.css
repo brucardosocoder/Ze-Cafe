@@ -281,19 +281,20 @@ canvas {
 
 #controls {
   position: fixed;
-  bottom: 20px;
+  bottom: 80px;
   left: 0;
   right: 0;
   display: none;
-  justify-content: space-around;
+  justify-content: space-between;
   z-index: 100;
 }
 
 #controls button {
-  background: none;
-  border: none;
-  font-size: 50px;
-  color: #8b4513;
+  background-color: #8b4513c7;
+  border-radius: 0 0 50% 50%;
+  border-color: transparent;
+  font-size: 60px;
+  color: #f5f0e1be;
   cursor: pointer;
   padding: 10px;
   opacity: 0.7;
@@ -456,6 +457,6 @@ canvas {
   }
   
   #controls button {
-    font-size: 40px;
+    font-size: 70px;
   }
 }
