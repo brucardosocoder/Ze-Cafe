@@ -63,9 +63,9 @@ let ultimoPowerUpGerado = 0; // Timestamp do último power-up gerado
 
 const zecafe = {
   x: canvas.width / 2,
-  y: canvas.height - 120,
-  width: 120,
-  height: 120,
+  y: canvas.height - 160,
+  width: 160,
+  height: 160,
   velocidadeBase: 5,
   velocidadeAtual: 5
 };
